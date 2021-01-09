@@ -8,5 +8,6 @@ edition = "2018"
 
 [dependencies]
 actix-web = "3"
+actix-session = "0.4"
 tera = "1"
 serde = "1"
