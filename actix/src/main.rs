@@ -15,6 +15,7 @@ async fn index(
     } else {
         let mut context = tera::Context::new();
         context.insert("username", &session.get::<String>("username").unwrap().unwrap());
+
         HttpResponse::Ok().content_type("text/html").body(
             tmpl.render("index.html", &context).unwrap()
         )
@@ -57,11 +58,13 @@ async fn login_verify(
         let mut context = tera::Context::new();
         context.insert("error", "Invalid credentials!");
         context.insert("username", &login_data.username);
+
         HttpResponse::Unauthorized().content_type("text/html").body(
             tmpl.render("login.html", &context).unwrap()
         )
     } else {
         session.set("username", &login_data.username);
+
         HttpResponse::Found().header(http::header::LOCATION, "/").finish()
     }
 }
@@ -73,6 +76,7 @@ async fn logout(
     session: Session
 ) -> impl Responder {
     session.purge();
+
     HttpResponse::Found().header(http::header::LOCATION, "/login").finish()
 }
 
